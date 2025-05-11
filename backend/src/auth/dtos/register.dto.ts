@@ -1,9 +1,7 @@
 import { IsEmail,  IsString, Matches, MinLength } from 'class-validator';
-// import { IsEmailUnique } from 'src/auth/validators/isUniqueEmail.validator';
 
 export class RegisterDTO {
   @IsEmail()
-//   @IsEmailUnique({message:"Email Already Exists"})
   email: string;
 
   @IsString()
