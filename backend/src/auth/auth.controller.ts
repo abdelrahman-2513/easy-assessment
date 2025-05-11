@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req } from '@nestjs/common';
 import { Public } from './decorators';
-import { LogInDTO } from './dtos';
+import { LogInDTO, RegisterDTO } from './dtos';
 import { ResponseDto } from 'src/shared/dtos/respone.dto';
 import { AuthedUser } from './types/authedUser.type';
 import { AuthService } from './auth.service';
@@ -21,6 +21,18 @@ export class AuthController {
       status: EResponse.SUCCESS,
       message: "Logged in successfully!",
       data: authedUser,
+    };
+  }
+  @Post("Signup")
+  @Public()
+  @HttpCode(HttpStatus.CREATED)
+  async Signup(@Body() registerDTO: RegisterDTO): Promise<ResponseDto<string>> {
+    const response = await this.authService.signUp(registerDTO);
+    
+    return {
+      status: EResponse.SUCCESS,
+      message: "Registered successfully!",
+      data: response,
     };
   }
 

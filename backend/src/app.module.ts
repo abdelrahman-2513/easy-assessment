@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
 import { UserModule } from './user/user.module';
 import { LogModule } from './log/log.module';
 import { AuthModule } from './auth/auth.module';
@@ -13,6 +12,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AllExceptionsFilter } from './shared/filters/all-exception.filter';
 import { TransformInterceptor } from './shared/transformers/transformer.interceptor';
 
+
 @Module({
   imports: [ConfigModule,
     
@@ -22,7 +22,7 @@ import { TransformInterceptor } from './shared/transformers/transformer.intercep
       useFactory: (configService: ConfigService) => ({
         uri: configService.get('DATABASE_URL'),
       }),
-    }) ,LogModule,AuthModule,UsersModule, UserModule],
+    }) ,LogModule,AuthModule, UserModule],
   controllers: [AppController],
   providers: [AppService, ConfigService,
     {

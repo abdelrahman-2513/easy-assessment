@@ -7,6 +7,7 @@ import { UserModule } from 'src/user/user.module';
 import { AuthGuard } from './guards/auth.guard';
 import { ConfigService } from 'src/config/config.service';
 import { ConfigModule } from 'src/config/config.module';
+import { UserService } from 'src/user/user.service';
 
 @Module({
   imports: [

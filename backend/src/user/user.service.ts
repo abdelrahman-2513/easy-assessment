@@ -15,7 +15,7 @@ export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    try {
+  
       const userExists = await this.userModel.findOne({ email: createUserDto.email });
       if (userExists) {
         throw new BadRequestException('Email already in use.');
@@ -23,10 +23,7 @@ export class UserService {
 
       const newUser = await this.userModel.create(createUserDto);
       return newUser;
-    } catch (error) {
-      console.log({error})
-      throw new InternalServerErrorException('Unable to create user.');
-    }
+   
   }
 
 
@@ -88,10 +85,6 @@ export class UserService {
     async findUserByEmail(email: string): Promise<User> {
     try {
       const user = await this.userModel.findOne({ email }).exec();
-
-      if (!user) {
-        throw new NotFoundException('User with this email was not found.');
-      }
 
       return user;
     } catch (error) {
