@@ -64,6 +64,7 @@ export class AuthService {
       id: user._id as unknown as string,
       email: user.email,
       role: user.role,
+      name:user.name,
     };
     const token = this.JwtSVC.sign(ATPayload, {
       secret: this.configService.get("JWT_SECRET", 'J0ZY74ZxzFGQK7p26IyoWIlBKAuolOwB'),
