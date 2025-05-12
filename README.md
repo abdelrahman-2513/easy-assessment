@@ -37,8 +37,8 @@ This is a full-stack web application that allows users to sign up, sign in, and 
 1. Clone the repository:
 
    ```bash
-   git clone <https://github.com/abdelrahman-2513/easy-assessment>
-   cd <frontend>
+   git clone https://github.com/abdelrahman-2513/easy-assessment
+   cd frontend
 
 2. Install dependencies:
 
@@ -78,8 +78,8 @@ This is a full-stack web application that allows users to sign up, sign in, and 
 1. Clone the repository:
 
    ```bash
-   git clone <https://github.com/abdelrahman-2513/easy-assessment>
-   cd <backend>
+   git clone https://github.com/abdelrahman-2513/easy-assessment
+   cd backend
 
 2. Install dependencies:
 
