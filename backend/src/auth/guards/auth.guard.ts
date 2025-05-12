@@ -38,10 +38,8 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_SECRET,
       });
       request.user = payload;
-      console.log(payload);
       return true;
     } catch (err) {
-      console.log(err);
       throw new InternalServerErrorException('Try Again Later');
     }
   }

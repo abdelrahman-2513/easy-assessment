@@ -8,23 +8,35 @@ import { ConfigService } from './config/config.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from './config/config.module';
 import { LogService } from './log/log.service';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AllExceptionsFilter } from './shared/filters/all-exception.filter';
 import { TransformInterceptor } from './shared/transformers/transformer.interceptor';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 
 @Module({
-  imports: [ConfigModule,
-    
+  imports: [
+    ThrottlerModule.forRoot({
+      throttlers:[{
+        ttl: 60,   
+        limit: 10, 
+      }]
+    }),
+    ConfigModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject:[ConfigService],
       useFactory: (configService: ConfigService) => ({
         uri: configService.get('DATABASE_URL'),
       }),
-    }) ,LogModule,AuthModule, UserModule],
+    })
+    , LogModule, AuthModule, UserModule],
   controllers: [AppController],
   providers: [AppService, ConfigService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    },
     {
     provide: APP_INTERCEPTOR,
     useClass: TransformInterceptor,

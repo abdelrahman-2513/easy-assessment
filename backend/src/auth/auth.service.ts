@@ -1,7 +1,9 @@
 import {
+  BadRequestException,
   HttpException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   Res,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -31,11 +33,11 @@ export class AuthService {
 
       const user = await this.userSVC.findUserByEmail(email);
       if (!user) {
-        throw new UnauthorizedException('User not found');
+        throw new NotFoundException('User not found');
       }
       const validUser = await this.verifyHash(enterdPassword, user.password);
       if (!validUser) {
-        throw new UnauthorizedException('wrong email or password');
+        throw new BadRequestException('wrong email or password');
       }
       const token = this.generateAccessToken(user);
       const authedUser: AuthedUser = new AuthedUser(user, token);
@@ -56,7 +58,7 @@ export class AuthService {
   public async getMe(request: Request): Promise<String> {
 
     const { user } = request;
-    return `Welcome Back ${user["name"]}`;
+    return `Welcome  ${user["name"]} To Easy Genertaor`;
   }
 
   private generateAccessToken(user: IUser): string {
