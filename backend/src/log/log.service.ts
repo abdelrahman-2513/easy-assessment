@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateLogDto } from './dto/create-log.dto';
-import { ELogStatus } from 'src/shared/enums'; 
+import { ELogStatus } from '../shared/enums'; 
 import { Log, logDocument } from './entities/log.entity';
 
 @Injectable()

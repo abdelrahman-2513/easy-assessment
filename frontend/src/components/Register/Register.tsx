@@ -40,11 +40,12 @@ const RegisterPage = () => {
       if (loggedInResponse) {
         toast.done(loggedInResponse.message);
       }
-    } catch (err) {
-      toast.error("Try Again Later");
+      setTimeout(()=>nav("/login"),1500);
+    } catch (err:any) {
+      const error = err.response.data;
+      toast.error(error.message);
     } finally {
       SetLoading(false);
-      nav("/login");
     }
   };
 

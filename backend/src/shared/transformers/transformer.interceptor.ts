@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ResponseDto } from '../dtos/respone.dto';
 import { ELogStatus, EResponse } from '../enums';
-import { LogService } from 'src/log/log.service';
+import { LogService } from '../../log/log.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()

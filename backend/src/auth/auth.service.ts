@@ -9,11 +9,11 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { AuthedUser } from './types/authedUser.type';
-import { IUser } from 'src/user/interfaces';
-import { ATPayload } from 'src/shared/types';
-import { ConfigService } from 'src/config/config.service';
+import { IUser } from '../user/interfaces';
+import { ATPayload } from '../shared/types';
+import { ConfigService } from '../config/config.service';
 import { Request } from 'express';
 import { RegisterDTO } from './dtos';
 

@@ -7,7 +7,6 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigService } from './config/config.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from './config/config.module';
-import { LogService } from './log/log.service';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AllExceptionsFilter } from './shared/filters/all-exception.filter';
 import { TransformInterceptor } from './shared/transformers/transformer.interceptor';

@@ -1,5 +1,5 @@
 import { IsString, IsEnum, IsOptional } from 'class-validator';
-import { ELogStatus } from 'src/shared/enums';
+import { ELogStatus } from '../../shared/enums';
 
 export class CreateLogDto {
     @IsString()

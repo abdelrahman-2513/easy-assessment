@@ -13,15 +13,14 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { ResponseDto } from 'src/shared/dtos/respone.dto';
-import { EResponse } from 'src/shared/enums';
-import { Public } from 'src/auth/decorators';
+import { ResponseDto } from '../shared/dtos/respone.dto';
+import { EResponse } from '../shared/enums';
+import { Public } from '../auth/decorators';
 
 @Controller('users') 
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Public()
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createUserDto: CreateUserDto): Promise<ResponseDto<User>> {

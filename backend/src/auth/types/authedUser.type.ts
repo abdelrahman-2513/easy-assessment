@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { IUser } from "src/user/interfaces";
+import { IUser } from "../../user/interfaces";
 
 export class LoggedUser implements IUser {
   id?: Types.ObjectId;

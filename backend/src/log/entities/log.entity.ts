@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
-import { ELogStatus } from "src/shared/enums";
+import { ELogStatus } from "../../shared/enums";
 
 
 export type logDocument = HydratedDocument<Log>;

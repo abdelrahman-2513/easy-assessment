@@ -8,7 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
-import { ATPayload } from 'src/shared/types';
+import { ATPayload } from '../../shared/types';
 import { IS_PUBLIC } from '../decorators';
 
 @Injectable()
@@ -40,7 +40,7 @@ export class AuthGuard implements CanActivate {
       request.user = payload;
       return true;
     } catch (err) {
-      throw new InternalServerErrorException('Try Again Later');
+      throw new UnauthorizedException('Invalid Token');
     }
   }
 

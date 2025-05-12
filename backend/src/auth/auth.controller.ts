@@ -1,10 +1,10 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req } from '@nestjs/common';
 import { Public } from './decorators';
 import { LogInDTO, RegisterDTO } from './dtos';
-import { ResponseDto } from 'src/shared/dtos/respone.dto';
+import { ResponseDto } from '../shared/dtos/respone.dto';
 import { AuthedUser } from './types/authedUser.type';
 import { AuthService } from './auth.service';
-import { EResponse } from 'src/shared/enums';
+import { EResponse } from '../shared/enums';
 import { Request } from 'express';
 
 @Controller('auth')
@@ -13,7 +13,7 @@ export class AuthController {
 
   @Post("Signin")
   @Public()
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.OK)
   async login(@Body() logInDto: LogInDTO): Promise<ResponseDto<AuthedUser>> {
     const authedUser: AuthedUser = await this.authService.signIn(logInDto.email, logInDto.password);
     

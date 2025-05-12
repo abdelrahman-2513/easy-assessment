@@ -10,7 +10,7 @@ import {
 import { Request, Response } from 'express';
 import { ResponseDto } from '../dtos/respone.dto';
 import { ELogStatus, EResponse } from '../enums';
-import { LogService } from 'src/log/log.service';
+import { LogService } from '../../log/log.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Catch()

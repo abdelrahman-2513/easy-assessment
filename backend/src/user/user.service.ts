@@ -18,7 +18,7 @@ export class UserService {
   
       const userExists = await this.userModel.findOne({ email: createUserDto.email });
       if (userExists) {
-        throw new BadRequestException('Email already in use.');
+        throw new BadRequestException('Email already exists.');
       }
 
       const newUser = await this.userModel.create(createUserDto);
