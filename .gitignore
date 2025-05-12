@@ -10,4 +10,5 @@
 *.log
 
 #env
-*.env
+/frontend/.env
+/backend/.env
