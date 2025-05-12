@@ -1,22 +1,21 @@
 {
     "version": 2,
-    "buildCommand": "cd backend && npm run build",
-    "outputDirectory": "backend/dist",
     "builds": [
         {
-            "src": "backend/dist/main.js",
-            "use": "@vercel/node",
-            "config": {
-                "includeFiles": [
-                    "backend/dist/**/*"
-                ]
-            }
+            "src": "src/main.ts",
+            "use": "@vercel/node"
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "backend/dist/main.js"
+            "dest": "src/main.ts",
+            "methods": [
+                "GET",
+                "POST",
+                "PATCH",
+                "DELETE"
+            ]
         }
     ]
 }
