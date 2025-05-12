@@ -10,10 +10,12 @@ async function bootstrap() {
   // Allow CORS for my frontend only
   app.use(helmet());
   app.enableCors({
-    origin:"*", 
+    origin:"https://easy-assessment-phi.vercel.app", 
     methods: 'GET,POST,PATCH,DELETE', 
     allowedHeaders: 'Content-Type, Accept, Authorization',
-    credentials:true
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
