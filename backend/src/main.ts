@@ -10,7 +10,7 @@ async function bootstrap() {
   // Allow CORS for my frontend only
   app.use(helmet());
   app.enableCors({
-    origin: 'http://localhost:5173', 
+    origin: ['http://localhost:5173','https://easy-assessment-phi.vercel.app/'], 
     methods: 'GET,POST,PATCH,DELETE', 
     allowedHeaders: 'Content-Type, Accept, Authorization',
     credentials:true

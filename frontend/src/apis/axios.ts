@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/', 
+  baseURL: 'https://easy-assessment-s83j-git-master-abdelrahman-2513s-projects.vercel.app/', 
   timeout: 5000, 
 });
 
