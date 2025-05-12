@@ -16,7 +16,7 @@ const Routes: React.FC = () => {
           <Route path="/register" element={<RegisterPage />} />
 
           <Route
-            path="/welcome"
+            path="/"
             element={
               <ProtectedRoute>
                 <WelcomePage />

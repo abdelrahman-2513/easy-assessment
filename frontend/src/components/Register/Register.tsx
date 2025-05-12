@@ -1,17 +1,13 @@
-
 import { useForm, Controller } from 'react-hook-form';
-import { TextField, Button, Container, Typography, Grid, Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { TextField, Button, Container, Typography, Grid, Box, CircularProgress } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import type { IRegister as IRegisterForm } from "../../interfaces/authInterface"
+import { register } from '../../apis/auth';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
 
-interface IRegisterForm {
-  name: string;
-  email: string;
-  password: string;
-}
-
-// Define the validation schema using Yup
 const validationSchema = yup.object({
   name: yup
     .string()
@@ -31,12 +27,25 @@ const validationSchema = yup.object({
 });
 
 const RegisterPage = () => {
+  const nav = useNavigate();
+  const [loading, SetLoading] = useState<boolean>(false);
   const { control, handleSubmit, formState: { errors } } = useForm<IRegisterForm>({
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (data: IRegisterForm) => {
-    console.log('Registering user with:', data);
+  const onSubmit = async (data: IRegisterForm) => {
+    SetLoading(true);
+    try {
+      const loggedInResponse = await register(data);
+      if (loggedInResponse) {
+        toast.done(loggedInResponse.message);
+      }
+    } catch (err) {
+      toast.error("Try Again Later");
+    } finally {
+      SetLoading(false);
+      nav("/login");
+    }
   };
 
   return (
@@ -47,9 +56,16 @@ const RegisterPage = () => {
           flexDirection: 'column',
           alignItems: 'center',
           padding: 3,
+          backgroundColor: 'rgba(255, 255, 255, 0.6)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '8px',
+          border: '2px solid #eb771e', 
+          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
         }}
       >
-        <Typography variant="h5">Register</Typography>
+        <Typography variant="h5" sx={{ marginBottom: 2 }}>
+          Register
+        </Typography>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           <Controller
             name="name"
@@ -63,6 +79,17 @@ const RegisterPage = () => {
                 margin="normal"
                 error={!!errors.name}
                 helperText={errors.name ? errors.name.message : ''}
+                sx={{
+                  marginBottom: 2,
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#eb771e',
+                    },
+                    '& fieldset': {
+                      borderColor: '#eb771e', 
+                    },
+                  },
+                }}
               />
             )}
           />
@@ -79,6 +106,17 @@ const RegisterPage = () => {
                 type="email"
                 error={!!errors.email}
                 helperText={errors.email ? errors.email.message : ''}
+                sx={{
+                  marginBottom: 2,
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#eb771e',
+                    },
+                    '& fieldset': {
+                      borderColor: '#eb771e', 
+                    },
+                  },
+                }}
               />
             )}
           />
@@ -95,6 +133,17 @@ const RegisterPage = () => {
                 type="password"
                 error={!!errors.password}
                 helperText={errors.password ? errors.password.message : ''}
+                sx={{
+                  marginBottom: 2,
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#eb771e', 
+                    },
+                    '& fieldset': {
+                      borderColor: '#eb771e', 
+                    },
+                  },
+                }}
               />
             )}
           />
@@ -102,12 +151,13 @@ const RegisterPage = () => {
             type="submit"
             variant="contained"
             fullWidth
-            sx={{ marginTop: 2 }}
+            sx={{ marginTop: 2, background: "#eb771e" }}
+            disabled={loading}
           >
-            Register
+            {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Register'}
           </Button>
           <Grid container justifyContent="flex-end" sx={{ marginTop: 1 }}>
-            <Grid >
+            <Grid>
               <Link to="/login">Already have an account? Login</Link>
             </Grid>
           </Grid>
