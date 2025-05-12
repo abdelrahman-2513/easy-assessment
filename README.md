@@ -37,8 +37,8 @@ This is a full-stack web application that allows users to sign up, sign in, and 
 1. Clone the repository:
 
    ```bash
-   git clone <repo-url>
-   cd <repo-directory>
+   git clone <https://github.com/abdelrahman-2513/easy-assessment>
+   cd <frontend>
 
 2. Install dependencies:
 
@@ -78,20 +78,26 @@ This is a full-stack web application that allows users to sign up, sign in, and 
 1. Clone the repository:
 
    ```bash
-   git clone <repo-url>
-   cd <repo-directory>
+   git clone <https://github.com/abdelrahman-2513/easy-assessment>
+   cd <backend>
 
 2. Install dependencies:
 
     ```bash
     npm install
 
-3. Run Test:
+3. Configuration:
+    
+    ```bash
+    DATABASE_URL=mongodb://localhost:27017/your-db-name
+    JWT_SECRET=your-secret-key
+
+4. Run Test:
 
     ```bash
     npm run test:e2e
 
-4. Start server:
+5. Start server:
 
     ```bash
     npm run start:dev
@@ -130,15 +136,9 @@ The entry point of the application. It initializes and starts the NestJS applica
 ### **`app.module.ts`**
 The root module of the application that imports and connects all the other modules (such as auth, user, etc.) to the NestJS framework.
 
-## Configuration
+### **`app.e2e.spec.ts`**
+The Start Point for the test cases just adjust the register function with what you want to create.
 
-### .env Configuration File
-
-Make sure you have a `.env` file in the root directory of your backend project with the following environment variables:
-
-```bash
-DATABASE_URL=mongodb://localhost:27017/your-db-name
-JWT_SECRET=your-secret-key
 
 ## Backend Key Features and Security
 
