@@ -37,10 +37,12 @@ const RegisterPage = () => {
     SetLoading(true);
     try {
       const loggedInResponse = await register(data);
-      if (loggedInResponse) {
+      if (loggedInResponse && loggedInResponse.status === "success") {
         toast.done(loggedInResponse.message);
       }
-      nav("/login")
+      setTimeout(() => {
+        nav("/login");
+      }  , 2000);
     } catch (err:any) {
       const error = err.response.data;
       toast.error(error.message);
