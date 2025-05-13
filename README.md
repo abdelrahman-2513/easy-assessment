@@ -121,6 +121,10 @@ The user module for handling CRUD operations related to users.
 - **Update User**: Modify existing user data.
 - **Delete User**: Remove user from the system.
 
+### **`log/`**
+The log module for handling READ related to users logs. 
+- **Read Log**: Fetch log details.
+
 ### **`shared/`**
 Contains shared utilities and modules such as:
 - **Exception Filters**: Standardized error handling.
@@ -154,8 +158,13 @@ The Start Point for the test cases just adjust the register function with what y
 
 - **CRUD operations for users** are protected by authentication guards:
   - **GET /user**: Fetch user data.
-  - **PUT /user**: Update user information.
+  - **PATCH /user**: Update user information.
   - **DELETE /user**: Delete the user.
+
+### 2. Log Module (Private Routes)
+
+- **Read operation for logs** are protected by authentication guards:
+  - **GET /logs**: Fetch system logs data.
   
 ### 3. Exception Handling
 
