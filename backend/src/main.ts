@@ -10,12 +10,12 @@ async function bootstrap() {
   // Allow CORS for my frontend only
   app.use(helmet());
   app.enableCors({
-      origin: true,
-      methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
-      credentials: true,
-      preflightContinue: false,
-      optionsSuccessStatus: 204,
+    origin: true,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
