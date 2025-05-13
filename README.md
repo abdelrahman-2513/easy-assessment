@@ -40,9 +40,10 @@ This is a full-stack web application that allows users to sign up, sign in, and 
    git clone https://github.com/abdelrahman-2513/easy-assessment
    cd frontend
 
-2. Install dependencies:
+2. Install dependencies (make sure to install node version 22 to match deployed config):
 
     ```bash
+    nvm install 22
     npm install
 
 3. Start server:
