@@ -34,7 +34,6 @@ const LoginPage = () => {
         setLoading(true)
         try {
             const loggedInResponse = await loginServer(data)
-            console.log({ loggedInResponse })
             if (loggedInResponse && loggedInResponse.status === "success") {
                 login(loggedInResponse.data.access_token)
                 toast.success(loggedInResponse.message)
