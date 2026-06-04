@@ -1,0 +1,9 @@
+FROM node:22-alpine
+
+ENV CI_DEPS_PATH=/opt/ci-deps
+WORKDIR ${CI_DEPS_PATH}
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+WORKDIR /builds

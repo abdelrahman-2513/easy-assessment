@@ -1,0 +1,108 @@
+stages:
+  - .pre
+  - build
+  - test
+  - deploy
+
+variables:
+  CI_IMAGE: $CI_REGISTRY_IMAGE/node-latest
+  CI_DEPS_PATH: /opt/ci-deps
+  DATABASE_URL: 'postgresql://ci:ci@localhost:5432/ci?schema=public'
+
+docker_build:
+  stage: .pre
+  image: docker:24
+  services:
+    - docker:24-dind
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker build -f ci/DockerFile -t $CI_IMAGE:latest .
+    - docker push $CI_IMAGE:latest
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
+      changes:
+        - package-lock.json
+        - ci/DockerFile
+    - if: $CI_COMMIT_BRANCH == "development" && $CI_PIPELINE_SOURCE != "merge_request_event"
+      changes:
+        - package-lock.json
+        - ci/DockerFile
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development")
+      changes:
+        - package-lock.json
+        - ci/DockerFile
+
+lint_project:
+  stage: .pre
+  image: $CI_IMAGE
+  needs:
+    - job: docker_build
+      optional: true
+  script:
+    - ln -sfn $CI_DEPS_PATH/node_modules node_modules
+    - npm run db:generate
+    - npm run lint
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development")
+
+build_project:
+  stage: build
+  image: $CI_IMAGE
+  needs:
+    - job: docker_build
+      optional: true
+  script:
+    - ln -sfn $CI_DEPS_PATH/node_modules node_modules
+    - npm run db:generate
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+      - node_modules/.prisma/
+      - node_modules/@prisma/client/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development")
+
+test_project:
+  stage: test
+  image: $CI_IMAGE
+  needs:
+    - build_project
+  script:
+    - ln -sfn $CI_DEPS_PATH/node_modules node_modules
+    - npm run db:generate
+    - npm run test
+    - cat dist/src/main.js
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development")
+
+deploy_project:
+  stage: deploy
+  image: $CI_IMAGE
+  before_script:
+    - apk add openssh-client
+    - echo "Deploying to $CI_COMMIT_BRANCH..."
+    - chmod 400 $SSH_PRIVATE_KEY
+    - eval $(ssh-agent)
+    - ssh-add $SSH_PRIVATE_KEY
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - cp $SSH_HOST_KEYS ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - ssh $SERVER_USER@$SERVER_HOST "
+      cd $SERVER_PATH &&
+      git checkout $CI_COMMIT_BRANCH &&
+      git pull origin $CI_COMMIT_BRANCH &&
+      npm ci &&
+      npm run db:sync &&
+      npm run build &&
+      pm2 delete easy-assessment || true &&
+      pm2 start dist/src/main.js --name easy-assessment &&
+      pm2 save
+      "
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "development" && $CI_PIPELINE_SOURCE != "merge_request_event"
