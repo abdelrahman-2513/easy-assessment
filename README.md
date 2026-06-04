@@ -30,6 +30,54 @@ This is a full-stack web application that allows users to sign up, sign in, and 
 
 ---
 
+## Run with Docker (recommended)
+
+The project is fully containerized for development (MongoDB + NestJS backend + React/Vite frontend). You can run everything at once from the repo root, or each service independently.
+
+### 1. Create env files
+
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+### 2a. Run the full stack from the root
+
+```bash
+docker compose up --build
+```
+
+This starts:
+- `mongodb` on port `27017`
+- `backend` (NestJS) on http://localhost:3000
+- `frontend` (Vite) on http://localhost:5173
+
+The backend waits for MongoDB to be healthy before starting, and inside the Docker network it connects to `mongodb://mongodb:27017/easy_assessment` automatically.
+
+### 2b. Run a service independently
+
+Backend (+ its own MongoDB):
+
+```bash
+cd backend
+docker compose up --build
+```
+
+Frontend only (set `VITE_API_URL` to your running backend):
+
+```bash
+cd frontend
+docker compose up --build
+```
+
+To stop and remove containers (add `-v` to also drop the database volume):
+
+```bash
+docker compose down
+```
+
+---
+
 ## Frontend (React)
 
 ### Installation
@@ -88,10 +136,20 @@ This is a full-stack web application that allows users to sign up, sign in, and 
     npm install
 
 3. Configuration:
-    
+
+    Copy the example env file and adjust the values. The app validates these on startup (see `src/config/env.validation.ts`) and fails fast if `DATABASE_URL` or `JWT_SECRET` are missing or invalid.
+
     ```bash
-    DATABASE_URL=mongodb://localhost:27017/your-db-name
+    cp .env.example .env
+    ```
+
+    ```bash
+    NODE_ENV=development
+    PORT=3000
+    DATABASE_URL=mongodb://localhost:27017/easy_assessment
     JWT_SECRET=your-secret-key
+    THROTTLE_TTL=60
+    THROTTLE_LIMIT=10
 
 4. Run Test:
 
@@ -110,19 +168,22 @@ The backend of the application follows a modular architecture, ensuring scalabil
 ### **`src/`** 
 Contains the main backend code.
 
-### **`auth/`**
+### **`modules/`**
+Houses the feature modules of the application:
+
+#### **`modules/auth/`**
 Handles authentication logic, including:
 - **Signin**: User login functionality.
 - **Signup**: User registration functionality.
 
-### **`user/`**
+#### **`modules/user/`**
 The user module for handling CRUD operations related to users. 
 - **Create User**: Allows creation of user data.
 - **Read User**: Fetch user details.
 - **Update User**: Modify existing user data.
 - **Delete User**: Remove user from the system.
 
-### **`log/`**
+#### **`modules/log/`**
 The log module for handling READ related to users logs. 
 - **Read Log**: Fetch log details.
 

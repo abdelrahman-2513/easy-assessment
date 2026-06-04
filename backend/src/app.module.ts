@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { LogModule } from './log/log.module';
-import { AuthModule } from './auth/auth.module';
+import { UserModule } from './modules/user/user.module';
+import { LogModule } from './modules/log/log.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { ConfigService } from './config/config.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from './config/config.module';
@@ -15,13 +15,17 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot({
-      throttlers:[{
-        ttl: 60,   
-        limit: 10, 
-      }]
-    }),
     ConfigModule,
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        throttlers: [{
+          ttl: Number(configService.get('THROTTLE_TTL', 60)),
+          limit: Number(configService.get('THROTTLE_LIMIT', 10)),
+        }],
+      }),
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject:[ConfigService],

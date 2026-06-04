@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { LogService } from './log.service';
-import { ResponseDto } from '../shared/dtos/respone.dto';
+import { ResponseDto } from '../../shared/dtos/respone.dto';
 import { Log } from './entities/log.entity';
-import { EResponse } from '../shared/enums';
+import { EResponse } from '../../shared/enums';
 
 @Controller('log')
 export class LogController {

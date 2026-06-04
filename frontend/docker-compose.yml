@@ -1,0 +1,21 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: easy-assessment-frontend-dev
+    restart: unless-stopped
+    environment:
+      # Point this at wherever your backend API is reachable.
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - frontend-network-dev
+
+networks:
+  frontend-network-dev:
+    driver: bridge

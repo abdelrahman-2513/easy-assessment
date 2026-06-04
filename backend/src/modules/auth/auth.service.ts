@@ -12,8 +12,8 @@ import * as bcrypt from 'bcryptjs';
 import { UserService } from '../user/user.service';
 import { AuthedUser } from './types/authedUser.type';
 import { IUser } from '../user/interfaces';
-import { ATPayload } from '../shared/types';
-import { ConfigService } from '../config/config.service';
+import { ATPayload } from '../../shared/types';
+import { ConfigService } from '../../config/config.service';
 import { Request } from 'express';
 import { RegisterDTO } from './dtos';
 

@@ -8,7 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
-import { ATPayload } from '../../shared/types';
+import { ATPayload } from '../../../shared/types';
 import { IS_PUBLIC } from '../decorators';
 
 @Injectable()

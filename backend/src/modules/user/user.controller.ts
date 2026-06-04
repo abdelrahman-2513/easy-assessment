@@ -13,8 +13,8 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { ResponseDto } from '../shared/dtos/respone.dto';
-import { EResponse } from '../shared/enums';
+import { ResponseDto } from '../../shared/dtos/respone.dto';
+import { EResponse } from '../../shared/enums';
 import { Public } from '../auth/decorators';
 
 @Controller('users') 

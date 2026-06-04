@@ -1,0 +1,49 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: easy-assessment-mongodb-dev
+    restart: unless-stopped
+    command: ["mongod", "--quiet"]
+    ports:
+      - "${MONGODB_PORT:-27017}:27017"
+    volumes:
+      - mongo_data_dev:/data/db
+    networks:
+      - backend-network-dev
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: easy-assessment-backend-dev
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_URL: mongodb://mongodb:27017/easy_assessment
+    ports:
+      - "${PORT:-3001}:3001"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - backend_dist_dev:/app/dist
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - backend-network-dev
+
+volumes:
+  mongo_data_dev:
+  backend_dist_dev:
+
+networks:
+  backend-network-dev:
+    driver: bridge
